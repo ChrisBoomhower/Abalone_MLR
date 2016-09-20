@@ -38,7 +38,7 @@ par(mfrow = c(2, 2))
 hist(aby.clean$Length)
 hist(aby.clean$Diameter)
 hist(aby.clean$Height)
-hist(log(aby.clean$Height))
+hist(log(aby.clean$Height+1))
 
 par(mfrow = c(2, 2))
 hist(aby.clean$Whole)
