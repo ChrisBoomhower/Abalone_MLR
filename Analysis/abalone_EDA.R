@@ -25,6 +25,10 @@ require(car)
 fit <- lm(sqrt.rings ~ Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 par(mfrow = c(1,1))
 
+## Check for covariance
+cor(cbind(aby.clean$sqrt.rings, aby.clean$Sex., aby.clean$Length, aby.clean$Diameter, aby.clean$log.height, aby.clean$sqrt.whole, aby.clean$sqrt.shucked, aby.clean$sqrt.viscera, aby.clean$sqrt.shell))
+scatterplotMatrix(~sqrt.rings + Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+
 # QQ Plot
 qqPlot(fit, main = "QQ Plot")
 
@@ -75,3 +79,8 @@ summary(fit)
 ## Generate diagnostic plots
 layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
 plot(fit)
+
+## Perform stepwise selection for assessment
+step <- stepAIC(fit, direction="both")
+step$anova # display results
+
