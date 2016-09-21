@@ -28,9 +28,14 @@ aby.clean <- rename(aby.clean, Viscera = V7)
 aby.clean <- rename(aby.clean, Shell = V8)
 aby.clean <- rename(aby.clean, Rings = V9)
 
+# Create dummy variables to match SAS methodology
+aby.clean$male <- ifelse(aby.clean$Sex. == "M", 1, 0)
+aby.clean$female <- ifelse(aby.clean$Sex. == "F", 1, 0)
+
 str(aby.clean)
 head(aby.clean)
 
+# Review distributions
 par(mfrow = c(1, 1))
 barplot(table(aby.clean$Sex.))
 
@@ -40,6 +45,13 @@ hist(aby.clean$Diameter)
 hist(aby.clean$Height)
 hist(log(aby.clean$Height+1))
 
+# View potential outliers in Height data
+par(mfrow = c(1, 1))
+boxplot(aby.clean$Height)
+outliers = boxplot(aby.clean$Height, plot=FALSE)$out
+aby.clean[aby.clean$Height %in% outliers,]
+
+# Continue reviewing distributions
 par(mfrow = c(2, 2))
 hist(aby.clean$Whole)
 hist(sqrt(aby.clean$Whole))

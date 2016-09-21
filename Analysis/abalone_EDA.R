@@ -22,12 +22,13 @@ require(car)
 ##############################################
 
 ## Generate initial model for EDA
-fit <- lm(sqrt.rings ~ Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+#fit <- lm(sqrt.rings ~ Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+fit <- lm(sqrt.rings ~ male + female + Length + Diameter + height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 par(mfrow = c(1,1))
 
 ## Check for covariance
 cor(cbind(aby.clean$sqrt.rings, aby.clean$Sex., aby.clean$Length, aby.clean$Diameter, aby.clean$log.height, aby.clean$sqrt.whole, aby.clean$sqrt.shucked, aby.clean$sqrt.viscera, aby.clean$sqrt.shell))
-scatterplotMatrix(~sqrt.rings + Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+#scatterplotMatrix(~sqrt.rings + Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 # QQ Plot
 qqPlot(fit, main = "QQ Plot")
@@ -61,8 +62,9 @@ ncvTest(fit)
 spreadLevelPlot(fit)
 
 # Evaluate Collinearity
-vif(fit) # variance inflation factors 
+vif(fit) # variance inflation factors
 sqrt(vif(fit)) > 2 # problem?
+vif(fit) > 10
 
 # Evaluate Nonlinearity: component + residual plot 
 crPlots(fit)
@@ -83,4 +85,5 @@ plot(fit)
 ## Perform stepwise selection for assessment
 step <- stepAIC(fit, direction="both")
 step$anova # display results
+
 
