@@ -50,6 +50,7 @@ par(mfrow = c(1, 1))
 boxplot(aby.clean$Height)
 outliers = boxplot(aby.clean$Height, plot=FALSE)$out
 aby.clean[aby.clean$Height %in% outliers,]
+hist(subset(aby.clean, rownames(aby.clean) != 2052 & rownames(aby.clean) != 1418)$Height)
 
 # Continue reviewing distributions
 par(mfrow = c(2, 2))
