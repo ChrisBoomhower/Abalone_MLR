@@ -181,6 +181,15 @@ summary(fit5)
 layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
 plot(fit5)
 
+## SOME QUICK AD HOC REVIEW OF OBS 1418 REMOVAL ##Some quick ad hoc review of Obs. 1418 removal ##
+## DISCUSS HOW THE TWO LARGE HEIGHT OUTLIERS DO NOT HAVE A VERY LARGE IMPACT ON THE MODEL RESULTS
+## REFER TO MSDS 6371 UNIT 14 SLIDE PORTRAYING OUTLIER DECISION TREE
+aby.clean3 <- subset(aby.clean2, rownames(aby.clean2) != 1418)
+fitT <- lm(sqrt.rings ~ male + female  + Height  + sqrt.shucked + sqrt.shell, data = aby.clean3)
+summary(fitT)
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+plot(fitT)
+
 ##############################################################################
 ## Model Reduction Attempt #5 (sqrt.shell removal)
 ##############################################################################
