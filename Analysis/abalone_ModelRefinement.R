@@ -186,6 +186,7 @@ plot(fit5)
 ## REFER TO MSDS 6371 UNIT 14 SLIDE PORTRAYING OUTLIER DECISION TREE
 aby.clean3 <- subset(aby.clean2, rownames(aby.clean2) != 1418)
 fitT <- lm(sqrt.rings ~ male + female  + Height  + sqrt.shucked + sqrt.shell, data = aby.clean3)
+vif(fitT) # variance inflation factors
 summary(fitT)
 layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
 plot(fitT)
