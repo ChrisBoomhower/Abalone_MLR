@@ -22,13 +22,14 @@ require(car)
 ##############################################
 
 ## Generate initial model for EDA
-#fit <- lm(sqrt.rings ~ Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
-fit <- lm(sqrt.rings ~ male + female + Length + Diameter + height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+fit <- lm(sqrt.rings ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 par(mfrow = c(1,1))
 
 ## Check for covariance
-cor(cbind(aby.clean$sqrt.rings, aby.clean$Sex., aby.clean$Length, aby.clean$Diameter, aby.clean$log.height, aby.clean$sqrt.whole, aby.clean$sqrt.shucked, aby.clean$sqrt.viscera, aby.clean$sqrt.shell))
-#scatterplotMatrix(~sqrt.rings + Sex. + Length + Diameter + log.height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+attach(aby.clean)
+cor(cbind(sqrt.rings, Sex., Length, Diameter, Height, sqrt.whole, sqrt.shucked, sqrt.viscera, sqrt.shell))
+detach(aby.clean)
+pairs(~sqrt.rings + Sex. + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 # QQ Plot
 qqPlot(fit, main = "QQ Plot")
@@ -42,10 +43,10 @@ lines(xfit, yfit)
 
 # Outlier assessment
 outlierTest(fit) # Bonferonni p-value for most extreme obs
-leveragePlots(fit) # leverage plots
+#leveragePlots(fit) # leverage plots
 
-# Check for variable influence on response
-avPlots(fit)
+# Check for variable influence on response (Partial Regression Plot)
+#avPlots(fit)
 
 # Cook's D plot: identify D values > 4/(n-k-1) 
 cutoff <- 4/((nrow(mtcars)-length(fit$coefficients)-2))
@@ -56,24 +57,21 @@ plot(fit, which=4, cook.levels=cutoff)
 # influencePlot(fit,	id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
 
 # Evaluate homoscedasticity: non-constant error variance test
-ncvTest(fit)
+#ncvTest(fit)
 
 # Plot studentized residuals vs. fitted values 
-spreadLevelPlot(fit)
+#spreadLevelPlot(fit)
 
 # Evaluate Collinearity
 vif(fit) # variance inflation factors
-sqrt(vif(fit)) > 2 # problem?
-vif(fit) > 10
+#sqrt(vif(fit)) > 2 # problem?
+#vif(fit) > 10
 
-# Evaluate Nonlinearity: component + residual plot 
-crPlots(fit)
+# Evaluate Nonlinearity: component + residual plot (Partial Residuals)
+crPlots(fit, main="Partial-Residuals")
 
 # Ceres plots 
-ceresPlots(fit)
-
-# Test for Autocorrelated Errors
-durbinWatsonTest(fit)
+#ceresPlots(fit)
 
 # Model summary
 summary(fit)
@@ -83,7 +81,19 @@ layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page
 plot(fit)
 
 ## Perform stepwise selection for assessment
-step <- stepAIC(fit, direction="both")
+step <- stepAIC(fit, direction="forward")
 step$anova # display results
 
+##############################################
+## Model Reduction Attempt #1
+##############################################
+aby.clean2 <- subset(aby.clean, rownames(aby.clean) != 2052) # Remove Outlier 2052 since mismeasurement presumed  # & rownames(aby.clean) != 1418)
 
+fit2 <- lm(sqrt.rings ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean2)
+
+qqPlot(fit2, main = "QQ Plot2")
+
+## Generate diagnostic plots
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+plot(fit2)
+spreadLevelPlot(fit2)

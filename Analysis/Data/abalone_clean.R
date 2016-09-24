@@ -8,6 +8,7 @@
 ##############################
 
 require(dplyr)
+require(formattable)
 
 ##############################################
 ## Import raw data from disk
@@ -37,17 +38,18 @@ head(aby.clean)
 
 # Review distributions
 par(mfrow = c(1, 1))
-barplot(table(aby.clean$Sex.))
+barplot(table(aby.clean$Sex.)) # Abalone sex barplots
+table(aby.clean$Sex.) # Combine values with barplot using ggplot
 
 par(mfrow = c(2, 2))
-hist(aby.clean$Length)
+hist(aby.clean$Length) # Height Histograms
 hist(aby.clean$Diameter)
 hist(aby.clean$Height)
-hist(log(aby.clean$Height+1))
+boxplot(aby.clean$Height, main = "Boxplot of Height")
+#hist(log(aby.clean$Height+1))
 
 # View potential outliers in Height data
 par(mfrow = c(1, 1))
-boxplot(aby.clean$Height)
 outliers = boxplot(aby.clean$Height, plot=FALSE)$out
 aby.clean[aby.clean$Height %in% outliers,]
 hist(subset(aby.clean, rownames(aby.clean) != 2052 & rownames(aby.clean) != 1418)$Height)
@@ -64,6 +66,18 @@ hist(aby.clean$Shell)
 hist(sqrt(aby.clean$Shell))
 hist(aby.clean$Rings)
 hist(sqrt(aby.clean$Rings))
+
+# Provide descriptive summary statistics
+min <- round(sapply(aby.clean[,2:8], min, na.rm = TRUE),4)
+max <- round(sapply(aby.clean[,2:8], max, na.rm = TRUE),4)
+mean <- round(sapply(aby.clean[,2:8], mean, na.rm = TRUE),4)
+median <- round(sapply(aby.clean[,2:8], median, na.rm = TRUE),4)
+std.dev <- round(sapply(aby.clean[,2:8], sd, na.rm = TRUE),4)
+variance <- round(sapply(aby.clean[,2:8], var, na.rm = TRUE),4)
+
+var.summary <- rbind(min, max, mean, median, std.dev, variance) # Combine rows for summary table
+formattable(var.summary)
+
 
 ##############################################
 ## Transform the data
