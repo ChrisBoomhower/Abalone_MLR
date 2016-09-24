@@ -23,7 +23,6 @@ require(car)
 
 ## Generate initial model for EDA
 fit <- lm(sqrt.rings ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
-par(mfrow = c(1,1))
 
 ## Check for covariance
 attach(aby.clean)
@@ -32,7 +31,8 @@ detach(aby.clean)
 pairs(~sqrt.rings + Sex. + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 # QQ Plot
-qqPlot(fit, main = "QQ Plot")
+par(mfrow = c(1,1))
+qqPlot(fit, main = "QQ Plot fit1")
 
 # Studentized residuals distribution
 sresid <- studres(fit)
@@ -83,17 +83,3 @@ plot(fit)
 ## Perform stepwise selection for assessment
 step <- stepAIC(fit, direction="forward")
 step$anova # display results
-
-##############################################
-## Model Reduction Attempt #1
-##############################################
-aby.clean2 <- subset(aby.clean, rownames(aby.clean) != 2052) # Remove Outlier 2052 since mismeasurement presumed  # & rownames(aby.clean) != 1418)
-
-fit2 <- lm(sqrt.rings ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean2)
-
-qqPlot(fit2, main = "QQ Plot2")
-
-## Generate diagnostic plots
-layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
-plot(fit2)
-spreadLevelPlot(fit2)
