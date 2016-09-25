@@ -8,9 +8,10 @@
 ##############################
 
 ##############################################################################
-## Model Reduction Attempt #1 (observation 2052 and Length variable removed)
+## Model Reduction Attempt #1 (observation 2052 [obs.2051 after removing
+## 0 Height values] and Length variable removed)
 ##############################################################################
-aby.clean2 <- subset(aby.clean, rownames(aby.clean) != 2052) # Remove Outlier 2052 since mismeasurement presumed  # & rownames(aby.clean) != 1418)
+aby.clean2 <- subset(aby.clean, rownames(aby.clean) != 2051) # Remove Outlier 2051 since mis-measurement presumed
 
 fit2 <- lm(sqrt.rings ~ male + female + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean2)
 
@@ -96,15 +97,15 @@ layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page
 plot(fit3)
 
 ##############################################################################
-## Model Reduction Attempt #3 (sqrt.viscera removal)
+## Model Reduction Attempt #3 (Diameter removal)
 ##############################################################################
-fit4 <- lm(sqrt.rings ~ male + female + Diameter + Height  + sqrt.shucked + sqrt.shell, data = aby.clean2)
+fit4 <- lm(sqrt.rings ~ male + female + Height + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean2)
 
 ## Check for covariance
 attach(aby.clean)
-cor(cbind(sqrt.rings, Sex., Diameter, Height, sqrt.shucked, sqrt.shell))
+cor(cbind(sqrt.rings, Sex., Height, sqrt.shucked, sqrt.viscera, sqrt.shell))
 detach(aby.clean)
-pairs(~sqrt.rings + Sex. + Diameter + Height + sqrt.shucked + sqrt.shell, data = aby.clean)
+pairs(~sqrt.rings + Sex. + Height + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 # QQ Plot
 par(mfrow = c(1,1))
@@ -139,7 +140,7 @@ layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page
 plot(fit4)
 
 ##############################################################################
-## Model Reduction Attempt #4 (Diameter removal) *** I LIKE THIS ONE THE MOST!!!
+## Model Reduction Attempt #4 (sqrt.viscera removal) *** I LIKE THIS ONE THE MOST!!!
 ##############################################################################
 fit5 <- lm(sqrt.rings ~ male + female  + Height  + sqrt.shucked + sqrt.shell, data = aby.clean2)
 
@@ -184,8 +185,8 @@ plot(fit5)
 ## SOME QUICK AD HOC REVIEW OF OUTLIER INFLUENCE ON FINAL MODEL
 ## DISCUSS HOW THE TWO LARGE HEIGHT OUTLIERS DO NOT HAVE A VERY LARGE IMPACT ON THE MODEL RESULTS
 ## REFER TO MSDS 6371 UNIT 14 SLIDE PORTRAYING OUTLIER DECISION TREE
-aby.clean3 <- subset(aby.clean2, rownames(aby.clean2) != 1258 & rownames(aby.clean2) != 3997)
-fitT <- lm(sqrt.rings ~ male + female  + Height  + sqrt.shucked + sqrt.shell, data = aby.clean3)
+aby.clean3 <- subset(aby.clean2, rownames(aby.clean2) != 1417)
+fitT <- lm(sqrt.rings ~ male + female  + Height  + sqrt.shucked + sqrt.shell, data = aby.clean)
 vif(fitT) # variance inflation factors
 summary(fitT)
 layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
