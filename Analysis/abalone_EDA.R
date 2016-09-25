@@ -22,13 +22,13 @@ require(car)
 ##############################################
 
 ## Generate initial model for EDA
-fit <- lm(sqrt.rings ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+fit <- lm(sqrt.years ~ male + female + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 ## Check for covariance
 attach(aby.clean)
-cor(cbind(sqrt.rings, Sex., Length, Diameter, Height, sqrt.whole, sqrt.shucked, sqrt.viscera, sqrt.shell))
+cor(cbind(sqrt.years, Sex., Length, Diameter, Height, sqrt.whole, sqrt.shucked, sqrt.viscera, sqrt.shell))
 detach(aby.clean)
-pairs(~sqrt.rings + Sex. + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
+pairs(~sqrt.years + Sex. + Length + Diameter + Height + sqrt.whole + sqrt.shucked + sqrt.viscera + sqrt.shell, data = aby.clean)
 
 # QQ Plot
 par(mfrow = c(1,1))

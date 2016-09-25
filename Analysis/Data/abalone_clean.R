@@ -26,6 +26,7 @@ aby.clean[,2:8] <- aby.clean[,2:8] * 200 # Muliply continuous variables by 200 t
 # Create dummy variables to match SAS methodology
 aby.clean$male <- ifelse(aby.clean$Sex. == "M", 1, 0)
 aby.clean$female <- ifelse(aby.clean$Sex. == "F", 1, 0)
+aby.clean$Years <- aby.clean$Rings + 1.5
 
 str(aby.clean)
 head(aby.clean)
@@ -67,6 +68,8 @@ hist(aby.clean$Shell)
 hist(sqrt(aby.clean$Shell))
 hist(aby.clean$Rings)
 hist(sqrt(aby.clean$Rings))
+hist(aby.clean$Years)
+hist(sqrt(aby.clean$Years))
 
 # Provide descriptive summary statistics
 min <- round(sapply(aby.clean[,2:8], min, na.rm = TRUE),2)
@@ -88,3 +91,4 @@ aby.clean$sqrt.shucked <- sqrt(aby.clean$Shucked)
 aby.clean$sqrt.viscera <- sqrt(aby.clean$Viscera)
 aby.clean$sqrt.shell <- sqrt(aby.clean$Shell)
 aby.clean$sqrt.rings <- sqrt(aby.clean$Rings)
+aby.clean$sqrt.years <- sqrt(aby.clean$Years)
