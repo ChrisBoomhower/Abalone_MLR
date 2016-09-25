@@ -19,6 +19,8 @@ aby <- read.table("abalone.data", sep = ",")
 ## Clean-up / Preliminary EDA to see what
 ## transformations may be required
 ##############################################
+#aby.clean <- aby
+#names(aby.clean) <- c("Sex.", "Length", "Diameter", "Height", "Whole", "Shucked", "Viscera", "Shell", "Rings")
 aby.clean <- rename(aby, Sex. = V1)
 aby.clean <- rename(aby.clean, Length = V2)
 aby.clean <- rename(aby.clean, Diameter = V3)
@@ -53,6 +55,9 @@ par(mfrow = c(1, 1))
 outliers = boxplot(aby.clean$Height, plot=FALSE)$out
 aby.clean[aby.clean$Height %in% outliers,]
 hist(subset(aby.clean, rownames(aby.clean) != 2052 & rownames(aby.clean) != 1418)$Height)
+# Another method for removing the outliers:
+# aby.clean <- aby.clean %>% filter(Height >0 | Height < .5)  
+
 
 # Continue reviewing distributions
 par(mfrow = c(2, 2))
