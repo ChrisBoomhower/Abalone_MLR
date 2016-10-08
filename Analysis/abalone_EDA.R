@@ -10,12 +10,7 @@
 require(MASS)
 require(dplyr)
 require(car)
-
-##############################################
-## Randomly sample NYSclean
-##############################################
-# set.seed(20) #Seed set for reproducibility
-# NYSample <- NYSclean[sample(nrow(NYSclean), 10000),]
+require(sjPlot)
 
 ##############################################
 ## Perform EDA
@@ -53,35 +48,17 @@ lines(xfit, yfit)
 
 # Outlier assessment
 outlierTest(fit) # Bonferonni p-value for most extreme obs
-#leveragePlots(fit) # leverage plots
-
-# Check for variable influence on response (Partial Regression Plot)
-#avPlots(fit)
 
 # Cook's D plot: identify D values > 4/(n-k-1) 
 cutoff <- 4/((nrow(mtcars)-length(fit$coefficients)-2))
 par(mfrow = c(1,1))
 plot(fit, which=4, cook.levels=cutoff)
 
-# Influence Plot
-# influencePlot(fit,	id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
-
-# Evaluate homoscedasticity: non-constant error variance test
-#ncvTest(fit)
-
-# Plot studentized residuals vs. fitted values 
-#spreadLevelPlot(fit)
-
 # Evaluate Collinearity
 vif(fit) # variance inflation factors
-#sqrt(vif(fit)) > 2 # problem?
-#vif(fit) > 10
 
 # Evaluate Nonlinearity: component + residual plot (Partial Residuals)
 crPlots(fit, main="Partial-Residuals")
-
-# Ceres plots 
-#ceresPlots(fit)
 
 # Model summary
 summary(fit)
