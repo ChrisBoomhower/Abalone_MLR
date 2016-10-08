@@ -4,7 +4,7 @@
 ## Project 1: Multiple Linear Regression Analysis
 ## 10/03/2016
 ##
-## abalone_EDA.R
+## abalone_clean.R
 ##############################
 
 require(dplyr)
